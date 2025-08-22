@@ -3,6 +3,7 @@ import { Todo } from "../model";
 import { MdEdit, MdDelete, MdDone } from "react-icons/md";
 import { useState } from "react";
 import { useRef } from "react";
+import { FaRegCheckCircle, FaCheckCircle } from "react-icons/fa";
 
 // Props type for SingleTodo component
 type Props = {
@@ -21,9 +22,9 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
   // Toggle the isDone status of the todo
   const handleDone = (id: number) => {
     setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
-      //...todo mean copy all properties to newTodo but set new isDone value
+      todos.map(
+        (todo) => (todo.id === id ? { ...todo, isDone: !todo.isDone } : todo)
+        //...todo mean copy all properties to newTodo but set new isDone value
       )
     );
   };
@@ -53,42 +54,48 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
   return (
     // Form for editing the todo (pressing Enter saves changes)
     <form
-      className="flex w-3xs flex-wrap"
+      className="flex items-center my-3 place-content-between border-b-1 border-b-indigo-200 p-2"
       onSubmit={(e) => (edit ? handleEdit(e, todo.id) : e.preventDefault())}
     >
-      {/* If in edit mode, show input; else show todo text (strikethrough if done) */}
+      {todo.isDone ? (
+        <span onClick={() => handleDone(todo.id)}>
+          <FaCheckCircle className="w-5 h-5 text-indigo-300"/>
+        </span>
+      ) : (
+        <span onClick={() => handleDone(todo.id)}>
+          <FaRegCheckCircle className="w-5 h-5 text-indigo-300"/>
+        </span>
+      )}
+
+      {/* If in edit mode, show input; else show todo text */}
       {edit ? (
         <input
           ref={inputRef}
           value={editTodo}
           onChange={(e) => setEditTodo(e.target.value)}
+          className="text-xl w-4/5 border-1 rounded-full pl-2"
         />
       ) : todo.isDone ? (
-        <s className="w-1/2">{todo.todo}</s>
+        <s className="text-xl w-4/5 text-indigo-300">{todo.todo}</s>
       ) : (
-        <span className="w-1/2">{todo.todo}</span>
+        <span className="text-xl w-4/5 text-indigo-300">{todo.todo}</span>
       )}
 
       {/* Action icons: Edit, Delete, Done */}
-      <div className="flex">
+      <div className="flex gap-2">
         {/* Edit icon: only enables edit if not already editing and not done */}
         <span
-          className="icon"
           onClick={() => {
             if (!edit && !todo.isDone) {
               setEdit(!edit);
             }
           }}
         >
-          <MdEdit />
+          <MdEdit className="w-5 h-5 text-indigo-300" />
         </span>
         {/* Delete icon: removes the todo */}
-        <span className="icon" onClick={() => handleDelete(todo.id)}>
-          <MdDelete />
-        </span>
-        {/* Done icon: toggles the isDone status */}
-        <span className="icon" onClick={() => handleDone(todo.id)}>
-          <MdDone />
+        <span className="w-5 h-5" onClick={() => handleDelete(todo.id)}>
+          <MdDelete className="w-5 h-5 text-indigo-300" />
         </span>
       </div>
     </form>

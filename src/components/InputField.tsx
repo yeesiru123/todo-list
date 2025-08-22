@@ -12,7 +12,7 @@ const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
 
   return (
     <form
-      className="input"
+      className="flex items-center rounded-full bg-indigo-50"
       onSubmit={(e) => {
         handleAdd(e);
         //inputRef.current?.blur();
@@ -24,9 +24,9 @@ const InputField: React.FC<Props> = ({ todo, setTodo, handleAdd }) => {
         value={todo}
         onChange={(e) => setTodo(e.target.value)}
         placeholder="Add a new task"
-        className="w-1/2 border-2 border-gray-300 p-2 rounded-lg"
+        className="bg-transparent border-0 outline-none flex-1 h-14 pl-6 pr-2 placeholder:text-slate-400"
       />
-      <button type="submit" className="m-4">
+      <button type="submit" className="border-none rounded-full bg-indigo-200 w-32 h-14 text-white text-lg font-medium cursor-pointer">
         Add
       </button>
     </form>
