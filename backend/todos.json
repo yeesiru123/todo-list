@@ -1,0 +1,20 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "todo": "Learn React",
+      "isDone": false
+    },
+    {
+      "id": 2,
+      "todo": "Learn Kafka",
+      "isDone": false
+    },
+    {
+      "id": 3,
+      "todo": "Learn Clickhouse",
+      "isDone": false
+    }
+  ],
+  "next_id": 5
+}
