@@ -77,8 +77,18 @@ const App : React.FC = () => {
   console.log(todos);
 
   return (
-    <div className="bg-indigo-50 grid py-4 min-h-screen font-serif">
-      <div className='bg-white flex place-self-center w-3/5 md:max-w-3xl flex-col p-7 min-h-3/4 rounded-xl'>
+    <div className="bg-indigo-50 flex flex-col py-4 min-h-screen font-serif gap-2">
+      <div className='justify-end mb-3 mr-5 w-24 flex-none md:flex place-self-end'>
+        <button
+          onClick={auth.logout}
+          className='bg-indigo-300 text-white px-4 py-2 rounded-full hover:bg-indigo-400 transition disabled:opacity-50'
+          disabled={loading}
+        >
+          Logout
+        </button>
+      </div>
+
+      <div className='flex-auto bg-white flex place-self-center w-3/5 md:max-w-3xl flex-col p-7 min-h-3/4 rounded-xl'>
         <span className='text-center my-6 text-3xl font-semibold text-indigo-300'> To Do List </span>
         
         {error && (
