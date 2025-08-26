@@ -61,7 +61,6 @@ todo-list/
    python3 app.py
    ```
 
-
    The API will be available at `http://localhost:5000`
 
 ### Frontend Setup (React)

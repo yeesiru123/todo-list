@@ -2,8 +2,6 @@ import { Todo } from './model';
 import { AuthContext } from "./AuthProvide";
 import keycloak from "./keycloak";
 
-
-
 const API_BASE_URL = 'http://localhost:5000/api';
 
 export class TodoAPI {
@@ -15,7 +13,7 @@ export class TodoAPI {
           'Authorization': `Bearer ${keycloak.token}`,
         },
       });
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
