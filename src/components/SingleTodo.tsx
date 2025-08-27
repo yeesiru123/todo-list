@@ -11,10 +11,11 @@ type Props = {
   todo: Todo; // The todo item to display
   todos: Todo[]; // The list of all todos
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>; // Function to update todos
+  token: string; // Auth token for API calls
 };
 
 // SingleTodo component displays and manages a single todo item
-const SingleTodo = ({ todo, todos, setTodos }: Props) => {
+const SingleTodo = ({ todo, todos, setTodos, token }: Props) => {
   // State to track if the todo is in edit mode
   const [edit, setEdit] = useState<boolean>(false);
   // State to store the edited todo text
@@ -26,7 +27,7 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
   const handleDone = async (id: number) => {
     try {
       setLoading(true);
-      const updatedTodo = await TodoAPI.toggleTodo(id);
+      const updatedTodo = await TodoAPI.toggleTodo(id, token);
       setTodos(
         todos.map((todo) => (todo.id === id ? updatedTodo : todo))
       );
@@ -41,7 +42,7 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
   const handleDelete = async (id: number) => {
     try {
       setLoading(true);
-      await TodoAPI.deleteTodo(id);
+      await TodoAPI.deleteTodo(id, token);
       setTodos(todos.filter((todo) => todo.id !== id));
     } catch (error) {
       console.error('Error deleting todo:', error);
@@ -55,7 +56,7 @@ const SingleTodo = ({ todo, todos, setTodos }: Props) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const updatedTodo = await TodoAPI.updateTodo(id, { todo: editTodo });
+      const updatedTodo = await TodoAPI.updateTodo(id, { todo: editTodo }, token);
       setTodos(
         todos.map((todo) => (todo.id === id ? updatedTodo : todo))
       ); // Update the todo with the new text

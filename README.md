@@ -1,6 +1,7 @@
-# Todo List with Flask Backend
 
-A full-stack Todo List application with React frontend and Flask backend API.
+# Todo List with Flask, ClickHouse, and React
+
+A full-stack Todo List application with React frontend, Flask backend API, and ClickHouse as the database (via Docker). Optionally supports Keycloak authentication.
 
 ## Features
 
@@ -20,7 +21,7 @@ todo-list/
 ├── backend/
 │   ├── app.py              # Flask API server
 │   ├── requirements.txt    # Python dependencies
-│   └── todos.json         # Data persistence file (auto-generated)
+│   ├── docker-compose.yml  # ClickHouse Docker Compose config
 ├── src/
 │   ├── api.ts             # API service layer
 │   ├── App.tsx            # Main React component
@@ -32,37 +33,49 @@ todo-list/
 
 ## Setup Instructions
 
-### Backend Setup (Flask API)
+
+### Backend & Database Setup (Flask API + ClickHouse)
 
 1. **Navigate to the backend directory:**
-   ```powershell
+   ```bash
    cd backend
    ```
 
-2. **Install Python & pip:**
-   ```powershell
-    sudo apt install python3 python3-pip -y
+2. **Start ClickHouse with Docker Compose:**
+   ```bash
+   sudo docker compose up -d
+   ```
+   This will start ClickHouse on ports 8123 (HTTP) and 9000 (native).
+
+3. **Install Python & pip:**
+   ```bash
+   sudo apt install python3 python3-pip python3-venv -y
    ```
 
-3. **Create a Virtual Environment:**
-   ```powershell
-    sudo apt install python3-venv -y
-    python3 -m venv venv
-    source venv/bin/activate
+4. **Create a Virtual Environment:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
    ```
 
-4. **Install Flask and Flask-CORS:**
-   ```powershell
-   pip install Flask Flask-Cors
+5. **Install backend dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   pip install clickhouse-connect
    ```
 
-5. **Run Flask App:**
-   ```powershell
+6. **Run Flask App:**
+   ```bash
    python3 app.py
    ```
-
-
    The API will be available at `http://localhost:5000`
+
+#### (Optional) Keycloak Authentication
+If you use Keycloak for authentication, start it with Docker:
+```bash
+docker run -p 8080:8080 -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:24.0.3 start-dev
+```
+Configure your realm, client, and users as needed.
 
 ### Frontend Setup (React)
 
@@ -161,9 +174,10 @@ You need to run both the Flask backend and React frontend:
 
 The Flask backend is configured with CORS to allow requests from the React frontend running on a different port.
 
+
 ## Data Persistence
 
-Todos are persisted in a `todos.json` file in the backend directory. This file is automatically created and updated when you add, edit, or delete todos.
+Todos are persisted in ClickHouse, a high-performance columnar database, running in Docker. No local JSON file is used.
 
 ## Error Handling
 

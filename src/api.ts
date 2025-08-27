@@ -11,11 +11,9 @@ export class TodoAPI {
     try {
       const response = await fetch(`${API_BASE_URL}/todos`, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${keycloak.token}`,
+          'Authorization': `Bearer ${token}`,
         },
       });
-      
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -26,12 +24,13 @@ export class TodoAPI {
     }
   }
 
-  static async createTodo(todoText: string): Promise<Todo> {
+  static async createTodo(todoText: string, token: string): Promise<Todo> {
     try {
       const response = await fetch(`${API_BASE_URL}/todos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify({
           todo: todoText,
@@ -50,12 +49,13 @@ export class TodoAPI {
     }
   }
 
-  static async updateTodo(id: number, updates: Partial<Todo>): Promise<Todo> {
+  static async updateTodo(id: number, updates: Partial<Todo>, token: string): Promise<Todo> {
     try {
       const response = await fetch(`${API_BASE_URL}/todos/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(updates),
       });
@@ -71,10 +71,13 @@ export class TodoAPI {
     }
   }
 
-  static async deleteTodo(id: number): Promise<Todo> {
+  static async deleteTodo(id: number, token: string): Promise<Todo> {
     try {
       const response = await fetch(`${API_BASE_URL}/todos/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
       });
       
       if (!response.ok) {
@@ -88,10 +91,13 @@ export class TodoAPI {
     }
   }
 
-  static async toggleTodo(id: number): Promise<Todo> {
+  static async toggleTodo(id: number, token: string): Promise<Todo> {
     try {
       const response = await fetch(`${API_BASE_URL}/todos/${id}/toggle`, {
         method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
       });
       
       if (!response.ok) {
