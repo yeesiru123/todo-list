@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: backend-clickhouse-1
+    environment:
+      CLICKHOUSE_USER: default
+      CLICKHOUSE_PASSWORD: mysecret
+    ports:
+      - "18123:8123"   # HTTP interface
+      - "19000:9000"   # Native client
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+volumes:
+  clickhouse_data:
