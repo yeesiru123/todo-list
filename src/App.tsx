@@ -62,7 +62,7 @@ const App : React.FC = () => {
       try {
         setLoading(true);
         setError(null);
-        const newTodo = await TodoAPI.createTodo(todo.trim());
+        const newTodo = await TodoAPI.createTodo(todo.trim(), String(auth.token));
         setTodos([...todos, newTodo]);
         setTodo("");
       } catch (err) {
@@ -105,7 +105,7 @@ const App : React.FC = () => {
             <span className="text-indigo-500">Loading...</span>
           </div>
         ) : (
-          <TodoList todos={filteredTodos()} setTodos={setTodos}/>
+          <TodoList todos={filteredTodos()} setTodos={setTodos} token={auth.token ?? ""}/>
         )}
       </div>
     </div>
