@@ -4,3 +4,5 @@ clickhouse-connect>=0.7
 python-jose[cryptography]>=3.3
 requests>=2.32
 python-dotenv>=1.0
+kafka-python>=2.0
+clickhouse-driver>=0.2
