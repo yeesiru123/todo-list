@@ -1,4 +1,5 @@
 
+
 # Todo List with Flask, ClickHouse, and React
 
 A full-stack Todo List application with React frontend, Flask backend API, and ClickHouse as the database (via Docker). Optionally supports Keycloak authentication.
@@ -34,18 +35,20 @@ todo-list/
 ## Setup Instructions
 
 
-### Backend & Database Setup (Flask API + ClickHouse)
+
+### Backend, Database & Event Streaming Setup (Flask API + ClickHouse + Kafka)
 
 1. **Navigate to the backend directory:**
    ```bash
    cd backend
    ```
 
-2. **Start ClickHouse with Docker Compose:**
+
+2. **Start ClickHouse, Kafka, and Zookeeper with Docker Compose:**
    ```bash
    sudo docker compose up -d
    ```
-   This will start ClickHouse on ports 8123 (HTTP) and 9000 (native).
+   This will start ClickHouse (ports 18123/19000), Kafka (port 29092), and Zookeeper (port 22181).
 
 3. **Install Python & pip:**
    ```bash
@@ -58,17 +61,24 @@ todo-list/
    source venv/bin/activate
    ```
 
+
 5. **Install backend dependencies:**
    ```bash
    pip install -r requirements.txt
-   pip install clickhouse-connect
    ```
+
 
 6. **Run Flask App:**
    ```bash
    python3 app.py
    ```
    The API will be available at `http://localhost:5000`
+
+#### Kafka Integration
+
+- Kafka and Zookeeper are started via Docker Compose.
+- The backend uses the `kafka-python` library to produce events to the `todos-events` topic on every create, update, delete, and toggle action.
+- You can consume these events from Kafka for analytics, logging, or microservices.
 
 #### (Optional) Keycloak Authentication
 If you use Keycloak for authentication, start it with Docker:
@@ -175,9 +185,11 @@ You need to run both the Flask backend and React frontend:
 The Flask backend is configured with CORS to allow requests from the React frontend running on a different port.
 
 
-## Data Persistence
 
-Todos are persisted in ClickHouse, a high-performance columnar database, running in Docker. No local JSON file is used.
+## Data Persistence & Event Streaming
+
+- Todos are persisted in ClickHouse, a high-performance columnar database, running in Docker.
+- All todo changes (create, update, delete, toggle) are also sent as events to Kafka (`todos-events` topic).
 
 ## Error Handling
 
